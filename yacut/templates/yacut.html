@@ -52,8 +52,7 @@
             <h5 class="text-center">
               {% if url %}
               Ваша новая ссылка готова:
-              <a href="http://localhost/{{ url.short }}"></a>
-              <a href="{{ url.original }}">http://localhost/{{ url.short }}</a>
+              <a href="{{ url_for('redirect_to_original', short_id=url.short, _external=True) }}">http://localhost/{{ url.short }}</a>
               {% endif %}
             </h5>
             </p>
