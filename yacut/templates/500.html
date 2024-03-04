@@ -1,26 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<main>
-    <section class="container my-5 px-4">
-        <h1 class="text-center"><span style="color:red">Ya</span>Cut</h1>
-        <h1 class="mb-5">500</h1>
-        <p>Кажется серверу плохо</p>
-        <div class="container">
-            <div class="row my-3">
-                <div class="col-sm">
-                </div>
-                <div class="col-sm">
-                    <p class="text-center">
-                        {% if error_message %}
-                            <h5 class="text-center" style="color:red;">Ошибка 500: {{ error_message }}</h5>
-                        {% endif %}
-                    </p>
-                </div>
-                <div class="col-sm">
-                </div>
+
+<section class="container my-5 px-4">
+    <h1 class="text-center"><span style="color:red">Ya</span>Cut</h1>
+    <h1 class="mb-5">500</h1>
+    <p>Кажется серверу плохо</p>
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-sm">
+            </div>
+            <div class="col-sm">
+                <p class="text-center">
+                    {% if error_message %}
+                        <h5 class="text-center" style="color:red;">Ошибка 500: {{ error_message }}</h5>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-sm">
             </div>
         </div>
-    </section>
-</main>
+    </div>
+</section>
+
 {% endblock %}

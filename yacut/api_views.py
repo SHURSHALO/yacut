@@ -1,12 +1,15 @@
+from http import HTTPStatus
+
 from flask import jsonify, request
 
-from yacut import app, db
-from yacut.models import URLMap
-from yacut.utilis import get_unique_short_id, is_valid_custom_id
+from yacut import app
 from yacut.error_handlers import InvalidAPIUsage
+from yacut.models import URLMap
+from yacut.constants import MAX_SIZE
+from yacut.utilis import bd_save, get_unique_short_id, is_valid_custom_id
 
 
-@app.route('/api/id/', methods=['POST'])
+@app.route('/api/id/', methods=('POST',))
 def add_opinion():
 
     data = request.get_json()
@@ -14,15 +17,15 @@ def add_opinion():
         raise InvalidAPIUsage('Отсутствует тело запроса')
 
     if 'url' not in data or not data['url']:
-        raise InvalidAPIUsage('\"url\" является обязательным полем!')
+        raise InvalidAPIUsage('"url" является обязательным полем!')
 
     if 'custom_id' in data and data['custom_id']:
         if (
             not is_valid_custom_id(data['custom_id'])
-            or len(data['custom_id']) > 16
+            or len(data['custom_id']) > MAX_SIZE
         ):
             raise InvalidAPIUsage(
-                'Указано недопустимое имя для короткой ссылки', 400
+                'Указано недопустимое имя для короткой ссылки', HTTPStatus.BAD_REQUEST
             )
         data['custom_id'] = get_unique_short_id(data['custom_id'])
     else:
@@ -37,19 +40,18 @@ def add_opinion():
 
     url.from_dict(data)
 
-    db.session.add(url)
+    bd_save(url)
 
-    db.session.commit()
-    return jsonify(url.to_dict()), 201
+    return jsonify(url.to_dict()), HTTPStatus.CREATED
 
 
-@app.route('/api/id/<short_id>/', methods=['GET'])
+@app.route('/api/id/<short_id>/', methods=('GET',))
 def get_url(short_id):
 
     short = URLMap.query.filter_by(short=short_id).first()
     if short is None:
 
-        raise InvalidAPIUsage('Указанный id не найден', 404)
+        raise InvalidAPIUsage('Указанный id не найден', HTTPStatus.NOT_FOUND)
     url = short.original
 
-    return jsonify({'url': url}), 200
+    return jsonify({'url': url}), HTTPStatus.OK
