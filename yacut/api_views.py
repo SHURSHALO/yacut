@@ -25,7 +25,8 @@ def add_opinion():
             or len(data['custom_id']) > MAX_SIZE
         ):
             raise InvalidAPIUsage(
-                'Указано недопустимое имя для короткой ссылки', HTTPStatus.BAD_REQUEST
+                'Указано недопустимое имя для короткой ссылки',
+                HTTPStatus.BAD_REQUEST,
             )
         data['custom_id'] = get_unique_short_id(data['custom_id'])
     else:

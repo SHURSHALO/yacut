@@ -16,6 +16,7 @@ class UrlForm(FlaskForm):
         ],
     )
     custom_id = StringField(
-        'Ваш вариант короткой ссылки', validators=[Length(1, MAX_SIZE), Optional()]
+        'Ваш вариант короткой ссылки',
+        validators=[Length(1, MAX_SIZE), Optional()],
     )
     submit = SubmitField('Создать')

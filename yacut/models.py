@@ -13,12 +13,10 @@ class URLMap(db.Model):
     @classmethod
     def is_short_url_exists(cls, short_url):
         return cls.query.filter_by(short=short_url).first() is not None
-    
+
     def to_dict(self):
         base_url = app.config['BASE_URL']
-        return dict(
-            url=self.original, short_link=f'{base_url}/{self.short}'
-        )
+        return dict(url=self.original, short_link=f'{base_url}/{self.short}')
 
     def from_dict(self, data):
         url_dict = {'url': 'original', 'custom_id': 'short'}

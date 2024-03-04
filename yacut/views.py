@@ -11,10 +11,10 @@ from yacut.utilis import bd_save, get_unique_short_id
 @app.route('/', methods=('GET', 'POST'))
 def index_view():
     form = UrlForm()
-    
+
     if not form.validate_on_submit():
         return render_template('yacut.html', form=form)
-    
+
     short_id = get_unique_short_id(form.custom_id.data)
     if URLMap.is_short_url_exists(short_id):
         flash('Предложенный вариант короткой ссылки уже существует.')

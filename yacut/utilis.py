@@ -24,5 +24,5 @@ def is_valid_custom_id(custom_id):
 
 
 def bd_save(url):
-    db.session.add(url) 
+    db.session.add(url)
     db.session.commit()
