@@ -1,16 +1,16 @@
 from http import HTTPStatus
 
-from flask import jsonify, request
+from flask import jsonify, request, Response
 
 from yacut import app
 from yacut.error_handlers import InvalidAPIUsage
 from yacut.models import URLMap
 from yacut.constants import MAX_SIZE
-from yacut.utilis import bd_save, get_unique_short_id, is_valid_custom_id
+from yacut.utilis import db_save, get_unique_short_id, is_valid_custom_id
 
 
 @app.route('/api/id/', methods=('POST',))
-def add_opinion():
+def add_opinion() -> Response:
 
     data = request.get_json()
     if data is None:
@@ -41,13 +41,13 @@ def add_opinion():
 
     url.from_dict(data)
 
-    bd_save(url)
+    db_save(url)
 
     return jsonify(url.to_dict()), HTTPStatus.CREATED
 
 
 @app.route('/api/id/<short_id>/', methods=('GET',))
-def get_url(short_id):
+def get_url(short_id: str) -> Response:
 
     short = URLMap.query.filter_by(short=short_id).first()
     if short is None:
