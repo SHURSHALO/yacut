@@ -17,7 +17,7 @@ class URLMap(db.Model):
     @classmethod
     def is_short_url_exists(cls, short_url: str) -> bool:
         return cls.query.filter_by(short=short_url).first() is not None
-    
+
     @validates('short')
     def validate_short(self, key: str, short: str) -> str:
         if not re.match(VALIDATE_URL, short):
