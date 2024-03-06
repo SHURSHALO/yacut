@@ -1,6 +1,7 @@
-from http import HTTPStatus
+from typing import Tuple
 
 from flask import jsonify, request, Response
+from http import HTTPStatus
 
 from yacut import app
 from yacut.error_handlers import InvalidAPIUsage
@@ -10,8 +11,7 @@ from yacut.utilis import db_save, get_unique_short_id, is_valid_custom_id
 
 
 @app.route('/api/id/', methods=('POST',))
-def add_opinion() -> Response:
-
+def add_opinion() -> Tuple[Response, int]:
     data = request.get_json()
     if data is None:
         raise InvalidAPIUsage('Отсутствует тело запроса')
@@ -47,7 +47,7 @@ def add_opinion() -> Response:
 
 
 @app.route('/api/id/<short_id>/', methods=('GET',))
-def get_url(short_id: str) -> Response:
+def get_url(short_id: str) -> Tuple[Response, int]:
 
     short = URLMap.query.filter_by(short=short_id).first()
     if short is None:
